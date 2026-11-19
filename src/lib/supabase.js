@@ -20,3 +20,10 @@ export async function fetchRecentChecks(deviceId) {
   if (error) throw error
   return data
 }
+
+export async function insertCheck(check) {
+  if (!supabase) throw notConfigured()
+  const { data, error } = await supabase.from('checks').insert(check).select().single()
+  if (error) throw error
+  return data
+}
