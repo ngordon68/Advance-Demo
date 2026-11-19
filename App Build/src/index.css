@@ -1,0 +1,358 @@
+/*
+ * Palette (Colors.png): Faded Copper #A57548, Soft Apricot #FCD7AD (not used as a fill: it would change the disclaimer's layout),
+ * Peach Glow #F6C28B, Pacific Cyan #5296A5, Frosted Blue #82DDF0.
+ * Pacific Cyan with white text is only 3.4:1, so buttons use a deeper shade
+ * (#2F6E7C, 5.8:1). Faded Copper is not used: it is too low-contrast for text on cream.
+ * The per-allergen highlight colors stay separate so 9 allergens remain easy to tell apart.
+ */
+:root {
+  --bg: #fff8f0;
+  --surface: #ffffff;
+  --text: #3b2a1c;
+  --muted: #6e5642;
+  --border: #ecdcc8;
+  --accent: #2f6e7c;
+  --accent-hover: #255965;
+  --accent-text: #ffffff;
+  --accent-soft: #e6f7fb;
+  --focus: #5296a5;
+  --callout-text: #5c3a14;
+  --safe-bg: #e3f4e6;
+  --safe-text: #1f6b34;
+  --warn-bg: #f6c28b;
+  --warn-text: #5c3a14;
+  --shadow: 0 1px 2px rgb(59 42 28 / 0.06), 0 4px 16px rgb(165 117 72 / 0.08);
+
+  /* One highlight color per allergen */
+  --hl-milk: #cfe4ff;
+  --hl-eggs: #fff1a8;
+  --hl-fish: #c8f0ec;
+  --hl-shellfish: #ffd6cc;
+  --hl-tree-nuts: #e8d5c0;
+  --hl-peanuts: #ffdca8;
+  --hl-wheat: #f0e6b8;
+  --hl-soy: #d4f2c4;
+  --hl-sesame: #ead6ff;
+  --hl-text: #1f2328;
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1a17;
+    --surface: #26211c;
+    --text: #f5e9dc;
+    --muted: #bfae9c;
+    --border: #3e342a;
+    --brand: #d9a877;
+    --accent: #82ddf0;
+    --accent-hover: #a6e8f5;
+    --accent-text: #1c1a17;
+    --accent-soft: #1e3a40;
+    --focus: #82ddf0;
+    --callout-bg: #3a2a1a;
+    --callout-text: #fcd7ad;
+    --safe-bg: #16351f;
+    --safe-text: #7fd89a;
+    --warn-bg: #4a3218;
+    --warn-text: #f6c28b;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+
+    --hl-milk: #1f4a80;
+    --hl-eggs: #6b5a10;
+    --hl-fish: #135a54;
+    --hl-shellfish: #7a3322;
+    --hl-tree-nuts: #5c4128;
+    --hl-peanuts: #7a4d10;
+    --hl-wheat: #5e5320;
+    --hl-soy: #2e5a1e;
+    --hl-sesame: #4f2f78;
+    --hl-text: #ffffff;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: grid;
+  gap: 16px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.disclaimer {
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  color: var(--callout-text);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 0;
+  min-width: 0;
+  box-shadow: var(--shadow);
+}
+
+/* Allergen picker */
+.picker legend {
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 120ms, border-color 120ms;
+}
+
+.chip:hover {
+  border-color: var(--focus);
+}
+
+.chip input {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.chip:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+/* Ingredient input */
+.input {
+  display: grid;
+  gap: 8px;
+}
+
+.input label {
+  font-weight: 600;
+}
+
+textarea {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  resize: vertical;
+  transition: border-color 120ms;
+}
+
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+textarea:hover {
+  border-color: var(--focus);
+}
+
+button[type='submit'] {
+  justify-self: start;
+  font: inherit;
+  font-weight: 600;
+  padding: 8px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+  transition: background-color 120ms;
+}
+
+button[type='submit']:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+button[type='submit']:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+textarea:focus-visible,
+button:focus-visible,
+.chip:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* Result */
+.notice {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.notice-safe {
+  background: var(--safe-bg);
+  color: var(--safe-text);
+}
+
+.notice-warn {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+
+.summary-count {
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.summary ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.highlighted {
+  margin: 12px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+mark {
+  color: var(--hl-text);
+  border-radius: 4px;
+  padding: 0 2px;
+  font-weight: 600;
+}
+
+.hl-milk { background: var(--hl-milk); }
+.hl-eggs { background: var(--hl-eggs); }
+.hl-fish { background: var(--hl-fish); }
+.hl-shellfish { background: var(--hl-shellfish); }
+.hl-tree-nuts { background: var(--hl-tree-nuts); }
+.hl-peanuts { background: var(--hl-peanuts); }
+.hl-wheat { background: var(--hl-wheat); }
+.hl-soy { background: var(--hl-soy); }
+.hl-sesame { background: var(--hl-sesame); }
+
+/* Recent checks */
+.recent ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.recent-row {
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 120ms, border-color 120ms;
+}
+
+.recent-row:hover {
+  border-color: var(--focus);
+  background: var(--accent-soft);
+}
+
+.recent-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+}
+
+.badge {
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.badge-safe {
+  background: var(--safe-bg);
+  color: var(--safe-text);
+}
+
+.badge-warn {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+}
+
+.save-note {
+  margin: 12px 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
