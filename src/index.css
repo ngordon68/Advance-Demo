@@ -111,3 +111,5 @@ mark[class*='allergen-'], .tag[class*='allergen-'] { background: var(--a); }
   header h1 { font-size: 1.6rem; }
   .input button { justify-self: stretch; }
 }
+
+.device { font-size: 0.75rem; color: var(--muted); overflow-wrap: anywhere; }

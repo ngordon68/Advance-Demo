@@ -4,14 +4,29 @@ import IngredientInput from './components/IngredientInput.jsx'
 import ResultView from './components/ResultView.jsx'
 import RecentChecks from './components/RecentChecks.jsx'
 import { findMatches } from './lib/highlight.js'
-import { loadAllergens, saveAllergens } from './lib/storage.js'
+import { getDeviceId, loadAllergens, saveAllergens } from './lib/storage.js'
+import { fetchRecentChecks } from './lib/supabase.js'
+
+const deviceId = getDeviceId()
 
 export default function App() {
   const [allergens, setAllergens] = useState(loadAllergens)
   const [text, setText] = useState('')
   const [result, setResult] = useState(null)
+  const [recent, setRecent] = useState({ checks: [], loading: true, error: null })
 
   useEffect(() => saveAllergens(allergens), [allergens])
+
+  // Initial state is already loading, so the effect only sets state once the fetch settles.
+  useEffect(() => {
+    let cancelled = false
+    fetchRecentChecks(deviceId)
+      .then((checks) => !cancelled && setRecent({ checks, loading: false, error: null }))
+      .catch((err) => !cancelled && setRecent({ checks: [], loading: false, error: err.message }))
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const runCheck = (foodText, selected) => {
     if (selected.length === 0) {
@@ -38,7 +53,8 @@ export default function App() {
       <AllergenPicker selected={allergens} onChange={setAllergens} />
       <IngredientInput value={text} onChange={setText} onCheck={() => runCheck(text, allergens)} />
       <ResultView result={result} />
-      <RecentChecks onSelect={handleSelect} />
+      <RecentChecks {...recent} onSelect={handleSelect} />
+      <footer className="device">Device ID: <code>{deviceId}</code></footer>
     </main>
   )
 }

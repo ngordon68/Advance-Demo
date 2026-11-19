@@ -18,3 +18,19 @@ export function saveAllergens(allergens) {
     // Storage may be unavailable (private mode); selection just won't persist.
   }
 }
+
+const DEVICE_KEY = 'allergy-checker:device-id'
+
+// A random ID created once per browser. It scopes Recent checks to this device.
+export function getDeviceId() {
+  try {
+    let id = localStorage.getItem(DEVICE_KEY)
+    if (!id) {
+      id = crypto.randomUUID()
+      localStorage.setItem(DEVICE_KEY, id)
+    }
+    return id
+  } catch {
+    return (getDeviceId.fallback ??= crypto.randomUUID())
+  }
+}
